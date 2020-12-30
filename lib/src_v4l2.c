@@ -23,7 +23,7 @@
 #include "src.h"
 #include "log.h"
 
-#ifdef HAVE_V4L2
+//#ifdef HAVE_V4L2
 
 typedef struct {
 	void *start;
@@ -979,14 +979,14 @@ src_mod_t src_v4l2 = {
 	src_v4l2_grab
 };
 
-#else /* #ifdef HAVE_V4L2 */
+//#else /* #ifdef HAVE_V4L2 */
 
-src_mod_t src_v4l2 = {
+/*src_mod_t src_v4l2 = {
 	"", SRC_TYPE_NONE,
         NULL,
         NULL,
         NULL
 };
-
-#endif /* #ifdef HAVE_V4L2 */
+*/
+//#endif /* #ifdef HAVE_V4L2 */
 

@@ -20,6 +20,9 @@
 #include "src.h"
 #include "log.h"
 
+#define HAVE_V4L2 1
+#define HAVE_V4L1 1
+
 #ifdef HAVE_V4L2
 extern src_mod_t src_v4l2;
 #endif
@@ -28,7 +31,7 @@ extern src_mod_t src_v4l1;
 #endif
 extern src_mod_t src_file;
 extern src_mod_t src_raw;
-//extern src_mod_t src_test;
+// extern src_mod_t src_test;
 
 /* Modules should be listed here in order of preference. */
 src_mod_t* src_mod[] = {
@@ -143,21 +146,18 @@ int src_open(src_t *src, char *source)
 	while(src_mod[i])
 	{
 		int r = src_mod[i]->flags;
-		
 		if(S_ISCHR(st.st_mode) && r & SRC_TYPE_DEVICE) r = -1;
 		else if(!S_ISCHR(st.st_mode) && r & SRC_TYPE_FILE) r = -1;
 		else r = 0;
+
+
+		MSG("Trying source module %s...", src_mod[i]->name);
+
+		src->type = i;
+		r = src_mod[src->type]->open(src);
 		
-		if(r)
-		{
-			MSG("Trying source module %s...", src_mod[i]->name);
-			
-			src->type = i;
-			r = src_mod[src->type]->open(src);
-			
-			if(r != -2) return(r);
-		}
-		
+		if(r != -2) return(r);
+
 		i++;
 	}
 	
