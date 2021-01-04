@@ -32,7 +32,7 @@
  *
  * Returns 0 if successful, or -1 if failed.
 */
-extern int argncpy(char *dst, size_t n, char *src, char *sep, int arg, int opt);
+/*extern*/ int argncpy(char *dst, size_t n, char *src, char *sep, int arg, int opt);
 
 /* Returns the length of an argument (not including null-terminator).
  * On failure returns -1.

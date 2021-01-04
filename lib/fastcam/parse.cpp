@@ -147,7 +147,7 @@ char *argdup(char *src, char *sep, int arg, int opt)
     l = arglen(src, sep, arg, opt);
     if(l < 0) return(NULL);
     
-    dst = malloc(++l);
+    dst = (char *)malloc(++l);
     if(!dst) return(NULL);
     
     argncpy(dst, l, src, sep, arg, opt);

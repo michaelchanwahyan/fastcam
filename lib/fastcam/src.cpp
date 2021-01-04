@@ -89,7 +89,7 @@ int src_open(src_t *src, char *source)
     }
     
     sl = strlen(source) + 1;
-    s = malloc(sl);
+    s = (char *)malloc(sl);
     if(!s)
     {
         //ERROR("Out of memory.");
@@ -229,7 +229,7 @@ int src_set_option(src_option_t ***options, char *name, char *value)
     if(!options) return(-1);
     if(!*options)
     {
-        *options = malloc(sizeof(src_option_t *));
+        *options = (src_option_t **)malloc(sizeof(src_option_t *));
         if(!*options)
         {
             //ERROR("Out of memory.");
@@ -250,7 +250,7 @@ int src_set_option(src_option_t ***options, char *name, char *value)
     
     if(!*opts)
     {
-        void *new;
+        void *__new__;
         
         opt = (src_option_t *) malloc(sizeof(src_option_t));
         if(!opt)
@@ -259,15 +259,15 @@ int src_set_option(src_option_t ***options, char *name, char *value)
             return(-1);
         }
         
-        new = realloc(*options, sizeof(src_option_t *) * (count + 2));
-        if(!new)
+        __new__ = realloc(*options, sizeof(src_option_t *) * (count + 2));
+        if(!__new__)
         {
             free(opt);
             //ERROR("Out of memory.");
             return(-1);
         }
         
-        *options = (src_option_t **) new;
+        *options = (src_option_t **) __new__;
         (*options)[count++] = opt;
         (*options)[count++] = NULL;
         

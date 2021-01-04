@@ -90,8 +90,8 @@ int fswc_grab(char *name)
     if(src_open(&src, strdup("/dev/video0")) == -1) return(-1);
         
     /* Allocate memory for the average bitmap buffer. */
-    gbitmap = calloc(src.fps * 2 * src.height * 3, sizeof(avgbmp_t));
-    abitmap = calloc(2 * src.height * 3, sizeof(avgbmp_t));
+    gbitmap = (avgbmp_t *)calloc(src.fps * 2 * src.height * 3, sizeof(avgbmp_t));
+    abitmap = (avgbmp_t *)calloc(2 * src.height * 3, sizeof(avgbmp_t));
     FILE *f;
     uint32_t x, y, hlength;
     uint8_t *himg = NULL;
@@ -106,7 +106,7 @@ int fswc_grab(char *name)
         src_grab(&src);        
     
         //i = copy_jpeg_dht(src.img, src.length, &himg, &hlength);    
-        i = 1; himg = src.img; hlength = src.length;
+        i = 1; himg = (uint8_t *)src.img; hlength = src.length;
         im = gdImageCreateFromJpegPtr(hlength, himg);       
         
         gdImageCopy(im3, im, frame*2, 0, src.width / 2, 0, 2, src.height);

@@ -295,7 +295,7 @@ int src_v4l2_show_control(src_t *src, struct v4l2_queryctrl *queryctrl)
     {
     case V4L2_CTRL_TYPE_INTEGER:
         
-        t = malloc(64); /* Ick ... TODO: re-write this. */
+        t = (char *)malloc(64); /* Ick ... TODO: re-write this. */
         if(!t)
         {
             //ERROR("Out of memory.");
@@ -332,7 +332,7 @@ int src_v4l2_show_control(src_t *src, struct v4l2_queryctrl *queryctrl)
         
         querymenu.id = queryctrl->id;
         
-        t = calloc((queryctrl->maximum - queryctrl->minimum) + 1, 34);
+        t = (char *)calloc((queryctrl->maximum - queryctrl->minimum) + 1, 34);
         m = queryctrl->minimum;
         for(m = queryctrl->minimum; m <= queryctrl->maximum; m++)
         {
@@ -681,7 +681,7 @@ int src_v4l2_set_mmap(src_t *src)
         return(-1);
         }
     
-    s->buffer = calloc(s->req.count, sizeof(v4l2_buffer_t));
+    s->buffer = (v4l2_buffer_t *)calloc(s->req.count, sizeof(v4l2_buffer_t));
     if(!s->buffer)
     {
         //ERROR("Out of memory.");
@@ -766,7 +766,7 @@ int src_v4l2_set_read(src_t *src)
     
     if(~s->cap.capabilities & V4L2_CAP_READWRITE) return(-1);
     
-    s->buffer = calloc(1, sizeof(v4l2_buffer_t));
+    s->buffer = (v4l2_buffer_t *)calloc(1, sizeof(v4l2_buffer_t));
     if(!s->buffer)
     {
         //ERROR("Out of memory.");
@@ -774,7 +774,7 @@ int src_v4l2_set_read(src_t *src)
     }
     
     s->buffer[0].length = s->fmt.fmt.pix.sizeimage;
-    s->buffer[0].start  = malloc(s->buffer[0].length);
+    s->buffer[0].start  = (v4l2_buffer_t *)malloc(s->buffer[0].length);
     
     if(!s->buffer[0].start)
     {
@@ -800,7 +800,7 @@ static int src_v4l2_open(src_t *src)
     }
     
     /* Allocate memory for the state structure. */
-    s = calloc(sizeof(src_v4l2_t), 1);
+    s = (src_v4l2_t *)calloc(sizeof(src_v4l2_t), 1);
     if(!s)
     {
         //ERROR("Out of memory.");

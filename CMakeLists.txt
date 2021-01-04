@@ -34,19 +34,19 @@ target_link_libraries(fastcam_dec
   fastcam_dec_yuv
 )
 
-add_library(fastcam_log SHARED lib/fastcam/log.c)
+add_library(fastcam_log SHARED lib/fastcam/log.cpp)
 target_link_libraries(fastcam_log
   fastcam_config
 )
 
-add_library(fastcam_parse SHARED lib/fastcam/parse.c)
+add_library(fastcam_parse SHARED lib/fastcam/parse.cpp)
 
-add_library(fastcam_src_file SHARED lib/fastcam/src_file.c)
-add_library(fastcam_src_raw  SHARED lib/fastcam/src_raw.c)
-add_library(fastcam_src_v4l1 SHARED lib/fastcam/src_v4l1.c)
-add_library(fastcam_src_v4l2 SHARED lib/fastcam/src_v4l2.c)
+add_library(fastcam_src_file SHARED lib/fastcam/src_file.cpp)
+add_library(fastcam_src_raw  SHARED lib/fastcam/src_raw.cpp)
+add_library(fastcam_src_v4l1 SHARED lib/fastcam/src_v4l1.cpp)
+add_library(fastcam_src_v4l2 SHARED lib/fastcam/src_v4l2.cpp)
 
-add_library(fastcam_src SHARED lib/fastcam/src.c)
+add_library(fastcam_src SHARED lib/fastcam/src.cpp)
 target_link_libraries(fastcam_src
   fastcam_src_file
   fastcam_src_raw
@@ -55,7 +55,7 @@ target_link_libraries(fastcam_src
   fastcam_parse
 )
 
-add_executable (fastcam src/fswebcam.c)
+add_executable (fastcam src/fswebcam.cpp)
 target_link_libraries(fastcam
   /usr/lib/x86_64-linux-gnu/libgd.so
   #/usr/lib/arm-linux-gnueabihf/libgd.so

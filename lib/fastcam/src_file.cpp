@@ -139,7 +139,7 @@ int src_file_open(src_t *src)
     struct stat st;
     size_t size;
     
-    s = calloc(sizeof(src_file_t), 1);
+    s = (src_file_t *)calloc(sizeof(src_file_t), 1);
     if(!s)
     {
         //ERROR("Out of memory.");

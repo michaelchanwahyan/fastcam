@@ -38,7 +38,7 @@ int src_raw_open(src_t *src)
         return(-2);
     }
     
-    s = calloc(sizeof(src_raw_t), 1);
+    s = (src_raw_t *)calloc(sizeof(src_raw_t), 1);
     if(!s)
     {
         //ERROR("Out of memory.");
@@ -88,7 +88,7 @@ int src_raw_open(src_t *src)
         return(-1);
     }
     
-    s->img  = malloc(s->size);
+    s->img  = (char *)malloc(s->size);
     if(!s->img)
     {
         //ERROR("Out of memory.");
