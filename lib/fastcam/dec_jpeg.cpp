@@ -7,9 +7,7 @@
 /* and redistribute it under the terms of this license. A     */
 /* copy should be included with this source.                  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include <string.h>
 #include <stdlib.h>
@@ -18,6 +16,8 @@
 #include "fswebcam.h"
 #include "src.h"
 #include "log.h"
+#include "dec_jpeg.h"
+
 int copy_jpeg_dht(uint8_t *src,  uint32_t lsrc,
                     uint8_t **dst, uint32_t *ldst)
 {
@@ -102,13 +102,13 @@ int verify_jpeg_dht(uint8_t *src,  uint32_t lsrc,
 	/* If no SOS was found, insert the DHT directly after the SOI. */
 	if(i == NULL) i = src + 2;
 	
-	DEBUG("Inserting DHT segment into JPEG frame.");
+	//DEBUG("Inserting DHT segment into JPEG frame.");
 	
 	*ldst = lsrc + sizeof(dht);
-	*dst  = malloc(*ldst);
+	*dst  = (uint8_t *) malloc(*ldst);
 	if(!*dst)
 	{
-		ERROR("Out of memory.");
+		//ERROR("Out of memory.");
 		return(-1);
 	}
 	
@@ -128,7 +128,7 @@ int fswc_add_image_jpeg(src_t *src, avgbmp_t *abitmap)
 	int i;
 	
 	/* MJPEG data may lack the DHT segment required for decoding... */
-	i = verify_jpeg_dht(src->img, src->length, &himg, &hlength);
+	i = verify_jpeg_dht((uint8_t *)src->img, src->length, &himg, &hlength);
 	
 	im = gdImageCreateFromJpegPtr(hlength, himg);
 	if(i == 1) free(himg);
@@ -158,7 +158,7 @@ int fswc_add_strip_jpeg(src_t *src, avgbmp_t *abitmap)
 	int i;
 	
 	/* MJPEG data may lack the DHT segment required for decoding... */
-	i = copy_jpeg_dht(src->img, src->length, &himg, &hlength);
+	i = copy_jpeg_dht((uint8_t *)src->img, src->length, &himg, &hlength);
 	
 	im = gdImageCreateFromJpegPtr(hlength, himg);
 	//if(i == 1) free(himg);

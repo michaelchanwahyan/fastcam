@@ -891,7 +891,7 @@ int fswc_add_image_s561(avgbmp_t *dst, uint8_t *img, uint32_t length, uint32_t w
 	
 	if(spca561_decode(width, height, img, tmpimg) != 0)
 	{
-		ERROR("spca561_decode() failed");
+		//ERROR("spca561_decode() failed");
 		return(-1);
 	}
 	

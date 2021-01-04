@@ -34,14 +34,14 @@ int src_raw_open(src_t *src)
 	
 	if(!src->source)
 	{
-		ERROR("No device or file name specified.");
+		//ERROR("No device or file name specified.");
 		return(-2);
 	}
 	
 	s = calloc(sizeof(src_raw_t), 1);
 	if(!s)
 	{
-		ERROR("Out of memory.");
+		//ERROR("Out of memory.");
 		return(-2);
 	}
 	
@@ -51,7 +51,7 @@ int src_raw_open(src_t *src)
 	switch(src->palette)
 	{
 	case SRC_PAL_ANY:
-		ERROR("No palette format specified.");
+		//ERROR("No palette format specified.");
 		free(s);
 		return(-1);
 	case SRC_PAL_RGB32:
@@ -83,7 +83,7 @@ int src_raw_open(src_t *src)
 		s->size = src->width * src->height;
 		break;
 	default:
-		ERROR("Palette format not supported by raw source.");
+		//ERROR("Palette format not supported by raw source.");
 		free(s);
 		return(-1);
 	}
@@ -91,7 +91,7 @@ int src_raw_open(src_t *src)
 	s->img  = malloc(s->size);
 	if(!s->img)
 	{
-		ERROR("Out of memory.");
+		//ERROR("Out of memory.");
 		free(s);
 		return(-1);
 	}
@@ -100,8 +100,8 @@ int src_raw_open(src_t *src)
 	s->fd = open(src->source, O_RDONLY);
 	if(s->fd < 0)
 	{
-		ERROR("Error opening source: %s", src->source);
-		ERROR("open: %s", strerror(errno));
+		//ERROR("Error opening source: %s", src->source);
+		//ERROR("open: %s", strerror(errno));
 		free(s->img);
 		free(s);
 		return(-2);
@@ -110,7 +110,7 @@ int src_raw_open(src_t *src)
 	src->img = s->img;
 	src->length = s->size;
 	
-	MSG("%s opened.", src->source);
+	//MSG("%s opened.", src->source);
 	
 	return(0);
 }
@@ -138,14 +138,14 @@ int src_raw_grab(src_t *src)
 		
 		if(!r)
 		{
-			MSG("End of file reached.");
+			//MSG("End of file reached.");
 			return(-1);
 		}
 		
 		if(r < 0)
 		{
-			ERROR("Error reading from source");
-			ERROR("read: %s", strerror(errno));
+			//ERROR("Error reading from source");
+			//ERROR("read: %s", strerror(errno));
 			return(-1);
 		}
 		

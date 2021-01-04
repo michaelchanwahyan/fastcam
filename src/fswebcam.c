@@ -17,6 +17,7 @@
 #include "fastcam/src.h"
 #include "fastcam/dec.h"
 #include "fastcam/parse.h"
+#include "fastcam/dec_jpeg.h"
 
 gdImage* fswc_gdImageDuplicate(gdImage* src)
 {
@@ -41,7 +42,7 @@ int fswc_output(char *name, gdImage *image)
     im = fswc_gdImageDuplicate(image);
     if(!im)
     {
-        ERROR("Out of memory.");
+        //ERROR("Out of memory.");
         return(-1);
     }
     
@@ -49,13 +50,13 @@ int fswc_output(char *name, gdImage *image)
     
     if(!f)
     {
-        ERROR("Error opening file for output: %s", name);
-        ERROR("fopen: %s", strerror(errno));
+        //ERROR("Error opening file for output: %s", name);
+        //ERROR("fopen: %s", strerror(errno));
         gdImageDestroy(im);
         return(-1);
     }    
 
-    MSG("Writing JPEG image to '%s'.", name);
+    //MSG("Writing JPEG image to '%s'.", name);
     gdImageJpeg(im, f, -1);
 
     if(f != stdout) fclose(f);
@@ -104,12 +105,13 @@ int fswc_grab(char *name)
     {
         src_grab(&src);        
     
-        i = copy_jpeg_dht(src.img, src.length, &himg, &hlength);	
+        //i = copy_jpeg_dht(src.img, src.length, &himg, &hlength);	
+        i = 1; himg = src.img; hlength = src.length;
         im = gdImageCreateFromJpegPtr(hlength, himg);       
         
         gdImageCopy(im3, im, frame*2, 0, src.width / 2, 0, 2, src.height);
         gdImageDestroy(im);
-        MSG("No. of Frames= %d", frame);
+        //MSG("No. of Frames= %d", frame);
     }
 
     fswc_output(name, im3); 

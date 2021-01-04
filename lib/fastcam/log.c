@@ -7,9 +7,6 @@
 /* and redistribute it under the terms of this license. A     */
 /* copy should be included with this source.                  */
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
 #include "config.h"
 
 #include <stdio.h>
@@ -39,58 +36,6 @@ int fd_log = STDERR_FILENO;
 
 char quiet = 0;
 char verbose = 0;
-
-void log_set_fd(int fd)
-{
-	fd_log = fd;
-}
-
-int log_open(char *f)
-{
-	int fd;
-	
-	if(!f || use_syslog) return(0);
-	
-	fd = open(f, O_CREAT | O_WRONLY | O_APPEND | O_SYNC,
-	          S_IRUSR | S_IWUSR);
-	
-	if(fd == -1)
-	{
-		ERROR("Error opening log file '%s'...", f);
-		ERROR("open: %s", strerror(errno));
-		return(-1);
-	}
-	
-	fd_log = fd;
-	
-	return(0);
-}
-
-void log_close()
-{
-	if(fd_log == STDERR_FILENO || use_syslog) return;
-	
-	close(fd_log);
-	fd_log = STDERR_FILENO;
-}
-
-void log_verbose(char v)
-{
-	verbose = v;
-}
-
-void log_quiet(char v)
-{
-	quiet = v;
-}
-
-void log_syslog(char v)
-{
-	use_syslog = v;
-	
-	if(use_syslog) openlog(PACKAGE_NAME, LOG_PID | LOG_CONS, LOG_USER);
-	else closelog();
-}
 
 /* Taken from the GCC manual and cleaned up a bit. */
 char *vmake_message(const char *fmt, va_list ap)
@@ -142,74 +87,5 @@ char *make_message(const char *fmt, ... )
 	va_end(ap);
 	
 	return(msg);
-}
-
-void log_msg(char *file, char *function, int line, char l, char *s, ... )
-{
-	va_list ap;
-	char *msg, *o;
-	
-	/* Is logging enabled? */
-	if(fd_log == -1) return;
-	
-	/* Is this message visible in the current mode? */
-	if(l == FLOG_MESSAGE && quiet) return;
-	if(l == FLOG_HEAD && quiet) return;
-	if(l == FLOG_INFO && !verbose) return;
-	if(l == FLOG_WARN && quiet) return;
-	if(l == FLOG_DEBUG && !verbose) return;
-	
-	/* Format the message. */
-	va_start(ap, s);
-	msg = vmake_message(s, ap);
-	va_end(ap);
-	
-	if(!msg) return;
-	
-	/* Format the output. */
-	o = NULL;
-	
-	if(l == FLOG_DEBUG) o = make_message("%s,%i: %s\n", function, line, msg);
-	else o = make_message("%s\n", msg);
-	
-	if(!o)
-	{
-		free(msg);
-		return;
-	}
-	
-	/* Use text formatting if logging to stdout. */
-	if(fd_log == STDERR_FILENO && !use_syslog)
-	{
-		int colour = -1;
-		
-		if(l == FLOG_ERROR)      colour = FG_RED;
-		else if(l == FLOG_HEAD)  colour = BOLD;
-		else if(l == FLOG_DEBUG) colour = FG_CYAN;
-		else colour = RESET;
-		
-		if(!use_syslog) fprintf(stderr, "\033[%im", colour);
-	}
-	
-	if(!use_syslog) write(fd_log, o, strlen(o));
-	else
-	{
-		int p = LOG_INFO;
-		
-		switch(l)
-		{
-		case FLOG_ERROR: p = LOG_ERR; break;
-		case FLOG_WARN:  p = LOG_WARNING; break;
-		case FLOG_DEBUG: p = LOG_DEBUG; break;
-		}
-		
-		syslog(p, "%s", o);
-	}
-	
-	/* Reset console colour. */
-	if(fd_log == STDERR_FILENO && !use_syslog) fprintf(stderr, "\033[%im", RESET);
-	
-	free(msg);
-	free(o);
 }
 

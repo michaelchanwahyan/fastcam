@@ -10,20 +10,20 @@ ${CMAKE_CURRENT_SOURCE_DIR}/lib
 
 add_compile_options(-std=c++14)
 
-add_library(fastcam_config lib/fastcam/config.c)
+add_library(fastcam_config lib/fastcam/config.cpp)
 
-add_library(fastcam_dec_bayer SHARED lib/fastcam/dec_bayer.c)
-add_library(fastcam_dec_grey  SHARED lib/fastcam/dec_grey.c)
-add_library(fastcam_dec_jpeg  SHARED lib/fastcam/dec_jpeg.c)
+add_library(fastcam_dec_bayer SHARED lib/fastcam/dec_bayer.cpp)
+add_library(fastcam_dec_grey  SHARED lib/fastcam/dec_grey.cpp)
+add_library(fastcam_dec_jpeg  SHARED lib/fastcam/dec_jpeg.cpp)
 target_link_libraries(fastcam_dec_jpeg
   fastcam_config
 )
-add_library(fastcam_dec_png   SHARED lib/fastcam/dec_png.c)
-add_library(fastcam_dec_rgb   SHARED lib/fastcam/dec_rgb.c)
-add_library(fastcam_dec_s561  SHARED lib/fastcam/dec_s561.c)
-add_library(fastcam_dec_yuv   SHARED lib/fastcam/dec_yuv.c)
+add_library(fastcam_dec_png   SHARED lib/fastcam/dec_png.cpp)
+add_library(fastcam_dec_rgb   SHARED lib/fastcam/dec_rgb.cpp)
+add_library(fastcam_dec_s561  SHARED lib/fastcam/dec_s561.cpp)
+add_library(fastcam_dec_yuv   SHARED lib/fastcam/dec_yuv.cpp)
 
-add_library(fastcam_dec SHARED lib/fastcam/dec.c)
+add_library(fastcam_dec SHARED lib/fastcam/dec.cpp)
 target_link_libraries(fastcam_dec
   fastcam_dec_bayer
   fastcam_dec_grey

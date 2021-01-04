@@ -46,7 +46,7 @@ gdImage *fx_flip(gdImage *src, char *options)
 			int y, h;
 			gdImage *line;
 			
-			MSG("Flipping image vertically.");
+			//MSG("Flipping image vertically.");
 			
 			line = gdImageCreateTrueColor(gdImageSX(src), 1);
 			h = gdImageSY(src) / 2;
@@ -79,7 +79,7 @@ gdImage *fx_flip(gdImage *src, char *options)
 			int x, w;
 			gdImage *line;
 			
-			MSG("Flipping image horizontally.");
+			//MSG("Flipping image horizontally.");
 			
 			line = gdImageCreateTrueColor(1, gdImageSY(src));
 			w = gdImageSX(src) / 2;
@@ -107,7 +107,7 @@ gdImage *fx_flip(gdImage *src, char *options)
 			
 			gdImageDestroy(line);
 		}
-		else WARN("Unknown flip direction: %s", d);
+		//else WARN("Unknown flip direction: %s", d);
 	}
 	
 	return(src);
@@ -121,7 +121,7 @@ gdImage *fx_crop(gdImage *src, char *options)
 	
 	if(argncpy(arg, 32, options, ", \t", 0, 0))
 	{
-		WARN("Invalid area to crop: %s", arg);
+		//WARN("Invalid area to crop: %s", arg);
 		return(src);
 	}
 	
@@ -130,7 +130,7 @@ gdImage *fx_crop(gdImage *src, char *options)
 	
 	if(w < 0 || h < 0)
 	{
-		WARN("Invalid area to crop: %s", arg);
+		//WARN("Invalid area to crop: %s", arg);
 		return(src);
 	}
 	
@@ -138,7 +138,7 @@ gdImage *fx_crop(gdImage *src, char *options)
 	if(w > gdImageSX(src) ||
 	   h > gdImageSY(src))
 	{
-		WARN("Crop area is larger than the image!");
+		//WARN("Crop area is larger than the image!");
 		return(src);
 	}
 	
@@ -159,13 +159,13 @@ gdImage *fx_crop(gdImage *src, char *options)
 		y = (gdImageSY(src) - h) / 2;
 	}
 	
-	MSG("Cropping image from %ix%i [offset: %ix%i] -> %ix%i.",
-	    gdImageSX(src), gdImageSY(src), x, y, w, h);
+	//MSG("Cropping image from %ix%i [offset: %ix%i] -> %ix%i.",
+	//    gdImageSX(src), gdImageSY(src), x, y, w, h);
 	
 	im = gdImageCreateTrueColor(w, h);
 	if(!im)
 	{
-		WARN("Out of memory.");
+		//WARN("Out of memory.");
 		return(src);
 	}
 	
@@ -186,17 +186,17 @@ gdImage *fx_scale(gdImage *src, char *options)
 	
 	if(w < 0 || h < 0)
 	{
-		WARN("Invalid resolution: %s", options);
+		//WARN("Invalid resolution: %s", options);
 		return(src);
 	}
 	
-	MSG("Scaling image from %ix%i -> %ix%i.",
-	    gdImageSX(src), gdImageSY(src), w, h);
+	//MSG("Scaling image from %ix%i -> %ix%i.",
+	//    gdImageSX(src), gdImageSY(src), w, h);
 	
 	im = gdImageCreateTrueColor(w, h);
 	if(!im)
 	{
-		WARN("Out of memory.");
+		//WARN("Out of memory.");
 		return(src);
 	}
 	
@@ -224,7 +224,7 @@ gdImage *fx_rotate(gdImage *src, char *options)
 	/* Not rotating 0 degrees. */
 	if(angle == 0)
 	{
-		MSG("Not rotating 0 degrees.");
+		//MSG("Not rotating 0 degrees.");
 		return(src);
 	}
 	
@@ -235,15 +235,15 @@ gdImage *fx_rotate(gdImage *src, char *options)
 		return(src);
 	}
 	
-	MSG("Rotating image %i degrees. %ix%i -> %ix%i.", angle,
-	    gdImageSX(src), gdImageSY(src),
-	    gdImageSY(src), gdImageSX(src));
+	//MSG("Rotating image %i degrees. %ix%i -> %ix%i.", angle,
+	//    gdImageSX(src), gdImageSY(src),
+	//    gdImageSY(src), gdImageSX(src));
 	
 	/* Create rotated image. */
 	im = gdImageCreateTrueColor(gdImageSY(src), gdImageSX(src));
 	if(!im)
 	{
-		WARN("Out of memory.");
+		//WARN("Out of memory.");
 		return(src);
 	}
 	
@@ -278,7 +278,7 @@ gdImage *fx_deinterlace(gdImage *src, char *options)
 {
 	int x, y;
 	
-	MSG("Deinterlacing image.");
+	//MSG("Deinterlacing image.");
 	
 	for(y = 1; y < gdImageSY(src) - 1; y += 2)
 	{
@@ -308,7 +308,7 @@ gdImage *fx_invert(gdImage *src, char *options)
 {
 	int x, y;
 	
-	MSG("Inverting image.");
+	//MSG("Inverting image.");
 	
 	for(y = 0; y < gdImageSY(src); y++)
 		for(x = 0; x < gdImageSX(src); x++)
@@ -325,7 +325,7 @@ gdImage *fx_greyscale(gdImage *src, char *options)
 {
 	int x, y;
 	
-	MSG("Greyscaling image.");
+	//MSG("Greyscaling image.");
 	
 	for(y = 0; y < gdImageSY(src); y++)
 		for(x = 0; x < gdImageSX(src); x++)
@@ -344,7 +344,7 @@ gdImage *fx_swapchannels(gdImage *src, char *options)
 	
 	if(strlen(options) != 2)
 	{
-		WARN("You can only swap two channels: %s", options);
+		//WARN("You can only swap two channels: %s", options);
 		return(src);
 	}
 	
@@ -359,12 +359,12 @@ gdImage *fx_swapchannels(gdImage *src, char *options)
 	
 	if(mode < 1 || mode > 3)
 	{
-		WARN("Cannot swap colour channels '%s'", options);
+		//WARN("Cannot swap colour channels '%s'", options);
 		return(src);
 	}
 	
-	MSG("Swapping colour channels %c <> %c",
-		toupper(options[0]), toupper(options[1]));
+	//MSG("Swapping colour channels %c <> %c",
+	//	toupper(options[0]), toupper(options[1]));
 	
 	for(y = 0; y < gdImageSY(src); y++)
 		for(x = 0; x < gdImageSX(src); x++)

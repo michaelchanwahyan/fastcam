@@ -48,7 +48,7 @@ int src_file_open_jpeg(src_t *src)
 		/* Check for the segment marker. */
 		if(*(p++) != 0xFF)
 		{
-			ERROR("Segment marker not found,");
+			//ERROR("Segment marker not found,");
 			return(-1);
 		}
 		
@@ -58,7 +58,7 @@ int src_file_open_jpeg(src_t *src)
 		/* Verify the full segment is present. */
 		if((p - s->start) + length >= s->length)
 		{
-			ERROR("Incomplete segment.");
+			//ERROR("Incomplete segment.");
 			return(-1);
 		}
 		
@@ -70,8 +70,8 @@ int src_file_open_jpeg(src_t *src)
 			if(src->width != width ||
 			   src->height != height)
 			{
-				MSG("Adjusting resolution to %ix%i.",
-				    width, height);
+				//MSG("Adjusting resolution to %ix%i.",
+				//    width, height);
 				
 				src->width = width;
 				src->height = height;
@@ -83,7 +83,7 @@ int src_file_open_jpeg(src_t *src)
 		if(header == 0xD9 || /* EOI */
 		   header == 0xDA)   /* SOS */
 		{
-			WARN("%s: Unable to read resolution.", src->source);
+			//WARN("%s: Unable to read resolution.", src->source);
 			return(-1);
 		}
 		
@@ -103,7 +103,7 @@ int src_file_open_png(src_t *src)
 	
 	if(s->length < 24)
 	{
-		ERROR("%s: Unexpected end of file.", src->source);
+		//ERROR("%s: Unexpected end of file.", src->source);
 		return(-1);
 	}
 	
@@ -111,7 +111,7 @@ int src_file_open_png(src_t *src)
 	
 	if(strncmp((char *) p, "IHDR", 4))
 	{
-		ERROR("%s: IHDR chunk must be first.", src->source);
+		//ERROR("%s: IHDR chunk must be first.", src->source);
 		return(-1);
 	}
 	
@@ -123,8 +123,8 @@ int src_file_open_png(src_t *src)
 	if(src->width  != width ||
 	   src->height != height)
 	{
-		MSG("Adjusting resolution to %ix%i.",
-		    width, height);
+		//MSG("Adjusting resolution to %ix%i.",
+		//    width, height);
 		
 		src->width = width;
 		src->height = height;
@@ -142,7 +142,7 @@ int src_file_open(src_t *src)
 	s = calloc(sizeof(src_file_t), 1);
 	if(!s)
 	{
-		ERROR("Out of memory.");
+		//ERROR("Out of memory.");
 		return(-2);
 	}
 	
@@ -151,8 +151,8 @@ int src_file_open(src_t *src)
 	/* Get the file's size in bytes. */
 	if(stat(src->source, &st) == -1)
 	{
-		ERROR("Error accessing file %s", src->source);
-		ERROR("stat: %s", strerror(errno));
+		//ERROR("Error accessing file %s", src->source);
+		//ERROR("stat: %s", strerror(errno));
 		free(s);
 		return(-2);
 	}
@@ -160,8 +160,8 @@ int src_file_open(src_t *src)
 	s->f = fopen(src->source, "rb");
 	if(!s->f)
 	{
-		ERROR("Error opening file %s", src->source);
-		ERROR("fopen: %s", strerror(errno));
+		//ERROR("Error opening file %s", src->source);
+		//ERROR("fopen: %s", strerror(errno));
 		free(s);
 		return(-2);
 	}
@@ -171,7 +171,7 @@ int src_file_open(src_t *src)
 	s->start = (uint8_t *) malloc(s->length);
 	if(!s->start)
 	{
-		ERROR("Out of memory.");
+		//ERROR("Out of memory.");
 		fclose(s->f);
 		free(s);
 		return(-1);
@@ -187,8 +187,8 @@ int src_file_open(src_t *src)
 	
 	if(size != s->length)
 	{
-		ERROR("Error reading file. Read %i bytes of %i byte file.",
-		      size, s->length);
+		//ERROR("Error reading file. Read %i bytes of %i byte file.",
+		//      size, s->length);
 		free(s->start);
 		free(s);
 		return(-1);
@@ -200,7 +200,7 @@ int src_file_open(src_t *src)
 	/* Test for a JPEG file. */
 	if(s->start[0] == 0xFF && s->start[1] == 0xD8)
 	{
-		MSG("%s: Loading JPEG file.", src->source);
+		//MSG("%s: Loading JPEG file.", src->source);
 		
 		if(src_file_open_jpeg(src))
 		{
@@ -215,7 +215,7 @@ int src_file_open(src_t *src)
 	if(s->start[0] == 0x89 && s->start[1] == 0x50 &&
 	   s->start[2] == 0x4e && s->start[3] == 0x47)
 	{
-		MSG("%s: Loading PNG file.", src->source);
+		//MSG("%s: Loading PNG file.", src->source);
 		
 		if(src_file_open_png(src))
 		{
@@ -226,7 +226,7 @@ int src_file_open(src_t *src)
 		return(0);
 	}
 	
-	ERROR("%s: Unknown file format.", src->source);
+	//ERROR("%s: Unknown file format.", src->source);
 	src_close(src);
 	
 	return(-2);

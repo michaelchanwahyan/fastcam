@@ -148,13 +148,13 @@ int fswc_add_image_nv12mb(src_t *src, avgbmp_t *abitmap)
 			bx = x >> 4;
 			by = y >> 4;
 			
-			py  = src->img;
+			py  = (uint8_t *)src->img;
 			py += ((by * bw) + bx) * 0x100;
 			py += ((y - (by << 4)) * 0x10) + (x - (bx << 4));
 			
 			by /= 2;
 			
-			puv  = src->img + (src->width * src->height);
+			puv  = (uint8_t *)(src->img + (src->width * src->height));
 			puv += ((by * bw) + bx) * 0x100;
 			puv += (((y / 2) - (by << 4)) * 0x10) + ((x - (bx << 4)) &~ 1);
 			

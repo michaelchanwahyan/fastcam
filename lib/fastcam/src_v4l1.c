@@ -72,8 +72,8 @@ int src_v4l_get_capability(src_t *src, int fd, struct video_capability *vd)
 {
 	if(ioctl(fd, VIDIOCGCAP, vd) < 0)
 	{
-		ERROR("%s: Not a V4L device?", src->source);
-		ERROR("VIDIOCGCAP: %s", strerror(errno));
+		//ERROR("%s: Not a V4L device?", src->source);
+		//ERROR("VIDIOCGCAP: %s", strerror(errno));
 		return(-1);
 	}
 	
@@ -100,36 +100,36 @@ int src_v4l_get_capability(src_t *src, int fd, struct video_capability *vd)
 	/* Make sure we can capture from this device. */
 	if(!vd->type & VID_TYPE_CAPTURE)
 	{
-		ERROR("%s: Device does not support capturing.", src->source);
+		//ERROR("%s: Device does not support capturing.", src->source);
                 return(-1);
         }
 	
 	/* Make sure we can capture at the requested resolution. */
 	if(vd->minwidth && vd->minwidth > src->width)
 	{
-		WARN("Requested width too small. Adjusting %i -> %i.",
-		     src->width, vd->minwidth);
+		//WARN("Requested width too small. Adjusting %i -> %i.",
+		//     src->width, vd->minwidth);
 		src->width = vd->minwidth;
 	}
 	
 	if(vd->maxwidth && vd->maxwidth < src->width)
 	{
-		WARN("Requested width too large. Adjusting %i -> %i.",
-		     src->width, vd->maxwidth);
+		//WARN("Requested width too large. Adjusting %i -> %i.",
+		//     src->width, vd->maxwidth);
 		src->width = vd->maxwidth;
 	}
 	
 	if(vd->minheight && vd->minheight > src->height)
 	{
-		WARN("Requested height too small. Adjusting %i -> %i.",
-		     src->height, vd->minheight);
+		//WARN("Requested height too small. Adjusting %i -> %i.",
+		//     src->height, vd->minheight);
 		src->height = vd->minheight;
 	}
 	
 	if(vd->maxheight && vd->maxheight < src->height)
 	{
-		WARN("Requested height too large. Adjusting %i -> %i.",
-		     src->height, vd->maxheight);
+		//WARN("Requested height too large. Adjusting %i -> %i.",
+		//     src->height, vd->maxheight);
 		src->height = vd->maxheight;
 	}
 	
@@ -144,7 +144,7 @@ int src_v4l_set_input(src_t *src, int fd,
 	
 	if(vd->channels == 0)
 	{
-		MSG("No inputs available.");
+		//MSG("No inputs available.");
 		return(-1);
 	}
 	
@@ -156,7 +156,7 @@ int src_v4l_set_input(src_t *src, int fd,
 		vc->channel = count;
 		while(!ioctl(fd, VIDIOCGCHAN, vc))
 		{
-			MSG("%i: %s", count, (char *) vc->name);
+			//MSG("%i: %s", count, (char *) vc->name);
 			vc->channel = ++count;
 		}
 	}
@@ -164,7 +164,7 @@ int src_v4l_set_input(src_t *src, int fd,
 	/* If no input was specified, use input 0. */
 	if(!src->input)
 	{
-		MSG("No input was specified, using the first.");
+		//MSG("No input was specified, using the first.");
 		count = 1;
 		i = 0;
 	}
@@ -194,7 +194,7 @@ int src_v4l_set_input(src_t *src, int fd,
 	if(i == -1 || i >= count)
 	{
 		/* The specified input wasn't found! */
-		ERROR("Unrecognised input \"%s\"", src->input);
+		//ERROR("Unrecognised input \"%s\"", src->input);
 		return(-1);
 	}
 	
@@ -202,8 +202,8 @@ int src_v4l_set_input(src_t *src, int fd,
 	vc->channel = i;
 	if(ioctl(fd, VIDIOCGCHAN, vc) < 0)
 	{
-		ERROR("Error getting information for input \"%s\".",src->input);
-		ERROR("VIDIOCGCHAN: %s", strerror(errno));
+		//ERROR("Error getting information for input \"%s\".",src->input);
+		//ERROR("VIDIOCGCHAN: %s", strerror(errno));
 		return(-1);
 	}
 	
@@ -220,13 +220,13 @@ int src_v4l_set_input(src_t *src, int fd,
 	if(vc->type & VIDEO_TYPE_CAMERA) DEBUG("- CAMERA");
 	DEBUG("vc.norm=%d", vc->norm);
 	
-	MSG("Setting input to %i.", i);
+	//MSG("Setting input to %i.", i);
 	
 	/* Set the source. */
 	if(ioctl(fd, VIDIOCSCHAN, vc) < 0)
 	{
-		ERROR("Error while setting input to %i.", i);
-		ERROR("VIDIOCSCHAN: %s", strerror(errno));
+		//ERROR("Error while setting input to %i.", i);
+		//ERROR("VIDIOCSCHAN: %s", strerror(errno));
 		return(-1);
 	}
 	
@@ -241,14 +241,14 @@ int src_v4l_set_tuner(src_t *src, int fd,
 	
 	if(vc->tuners == 0)
 	{
-		MSG("No tuners available.");
+		//MSG("No tuners available.");
 		return(-1);
 	}
 	
 	/* Check the requested tuner exists. */
 	if(src->tuner >= vc->tuners)
 	{
-		ERROR("Requested tuner %i and only %i tuner(s) found.",
+		//ERROR("Requested tuner %i and only %i tuner(s) found.",
 		     src->tuner, vc->tuners - 1);
 		return(-1);
 	}
@@ -257,9 +257,9 @@ int src_v4l_set_tuner(src_t *src, int fd,
 	vt->tuner = src->tuner;
 	if(ioctl(fd, VIDIOCGTUNER, vt) < 0)
 	{
-		ERROR("Error getting information on tuner %i (input %i).",
+		//ERROR("Error getting information on tuner %i (input %i).",
 		      src->tuner, src->input);
-		ERROR("VIDIOCGCHAN: %s", strerror(errno));
+		//ERROR("VIDIOCGCHAN: %s", strerror(errno));
 		return(-1);
 	}
 	
@@ -289,13 +289,13 @@ int src_v4l_set_tuner(src_t *src, int fd,
 	if(vt->mode & VIDEO_MODE_AUTO) DEBUG("- AUTO");
 	DEBUG("vt.signal=%d", vt->signal);
 	
-	MSG("Setting tuner to %i.", src->tuner);
+	//MSG("Setting tuner to %i.", src->tuner);
 	
 	if(ioctl(fd, VIDIOCSTUNER, vt) < 0)
 	{
-		ERROR("Error setting tuner %i (input %i).",
-		      src->tuner, src->input);
-		ERROR("VIDIOCSTUNER: %s", strerror(errno));
+		//ERROR("Error setting tuner %i (input %i).",
+		//      src->tuner, src->input);
+		//ERROR("VIDIOCSTUNER: %s", strerror(errno));
 		return(-1);
 	}
 	
@@ -326,27 +326,27 @@ int src_v4l_set_frequency(src_t *src, int fd, struct video_tuner *vt)
 	/* Ensure frequency is within range of the tuner. */
 	if(freq < vt->rangelow)
 	{
-		WARN("Frequency is below tuners minimum. Using %.3f%s.",
-		     (float) vt->rangelow / 16, range);
+		//WARN("Frequency is below tuners minimum. Using %.3f%s.",
+		//     (float) vt->rangelow / 16, range);
 		
 		freq = vt->rangelow;
 	}
 	
 	if(freq > vt->rangehigh)
 	{
-		WARN("Frequency is above tuners maximum. Using %.3f%s.",
-		     (float) vt->rangehigh / 16, range);
+		//WARN("Frequency is above tuners maximum. Using %.3f%s.",
+		//     (float) vt->rangehigh / 16, range);
 		
 		freq = vt->rangehigh;
 	}
 	
 	/* Set the frequency. */
-	MSG("Setting frequency to %.3f%s.", (float) freq / 16, range);
+	//MSG("Setting frequency to %.3f%s.", (float) freq / 16, range);
 	
 	if(ioctl(fd, VIDIOCSFREQ, &freq) == -1)
 	{
-		ERROR("Error setting frequency.");
-		ERROR("VIDIOCSFREQ: %s", strerror(errno));
+		//ERROR("Error setting frequency.");
+		//ERROR("VIDIOCSFREQ: %s", strerror(errno));
 		return(-1);
 	}
 	
@@ -364,8 +364,8 @@ int src_v4l_set_picture(src_t *src, int fd, struct video_capability *vd)
 	
 	if(ioctl(fd, VIDIOCGPICT, &vp) < 0)
 	{
-		ERROR("Error getting picture information.");
-		ERROR("VIDIOCGPICT: %s", strerror(errno));
+		//ERROR("Error getting picture information.");
+		//ERROR("VIDIOCGPICT: %s", strerror(errno));
 		return(-1);
 	}
 	
@@ -409,7 +409,7 @@ int src_v4l_set_picture(src_t *src, int fd, struct video_capability *vd)
 			        SCALE(-100, 100, 0x0000, 0xFFFF, val),
 			        SCALE(0, 100, 0x0000, 0xFFFF, val));
 			
-			MSG("%-25s %-15s 100 - -100", name, t);
+			//MSG("%-25s %-15s 100 - -100", name, t);
 		}
 	}
 	
@@ -431,13 +431,13 @@ int src_v4l_set_picture(src_t *src, int fd, struct video_capability *vd)
 	/* MJPEG devices are a special case... */
 	if(vd->type & VID_TYPE_MJPEG_ENCODER)
 	{
-		WARN("Device is MJPEG only. Forcing JPEG palette.");
+		//WARN("Device is MJPEG only. Forcing JPEG palette.");
 		src->palette = SRC_PAL_JPEG;
 	}
 	
 	if(src->palette == SRC_PAL_JPEG && !(vd->type & VID_TYPE_MJPEG_ENCODER))
 	{
-		ERROR("MJPEG palette requsted for a non-MJPEG device.");
+		//ERROR("MJPEG palette requsted for a non-MJPEG device.");
 		return(-1);
 	}
 	
@@ -449,8 +449,8 @@ int src_v4l_set_picture(src_t *src, int fd, struct video_capability *vd)
 		
 		if(ioctl(s->fd, MJPIOC_G_PARAMS, &mparm))
 		{
-			ERROR("Error querying video parameters.");
-			ERROR("MJPIOC_G_PARAMS: %s", strerror(errno));
+			//ERROR("Error querying video parameters.");
+			//ERROR("MJPIOC_G_PARAMS: %s", strerror(errno));
 			return(-1);
 		}
 		
@@ -501,8 +501,8 @@ int src_v4l_set_picture(src_t *src, int fd, struct video_capability *vd)
 		
 		if(ioctl(s->fd, MJPIOC_S_PARAMS, &mparm))
 		{
-			ERROR("Error setting video parameters.");
-			ERROR("MJPIOC_S_PARAMS: %s", strerror(errno));
+			//ERROR("Error setting video parameters.");
+			//ERROR("MJPIOC_S_PARAMS: %s", strerror(errno));
 			return(-1);
 		}
 		
@@ -526,7 +526,7 @@ int src_v4l_set_picture(src_t *src, int fd, struct video_capability *vd)
 		
 		if(!v4l_palette[v4l_pal].depth)
 		{
-			ERROR("Unable to handle palette format %s.",
+			//ERROR("Unable to handle palette format %s.",
 			      src_palette[src->palette]);
 			
 			return(-1);
@@ -543,20 +543,20 @@ int src_v4l_set_picture(src_t *src, int fd, struct video_capability *vd)
 			s->palette = v4l_pal;
 			src->palette = v4l_palette[v4l_pal].src;
 			
-			MSG("Using palette %s.",src_palette[src->palette].name);
+			//MSG("Using palette %s.",src_palette[src->palette].name);
 			
 			return(0);
 		}
 		
 		if(src->palette != SRC_PAL_ANY) break;
 		
-		WARN("The device does not support palette %s.",
-		     src_palette[v4l_palette[v4l_pal].src].name);
+		//WARN("The device does not support palette %s.",
+		//     src_palette[v4l_palette[v4l_pal].src].name);
 		
 		v4l_pal++;
 	}
 	
-	ERROR("Unable to find a compatible palette.");
+	//ERROR("Unable to find a compatible palette.");
 	
 	return(-1);
 }
@@ -586,8 +586,8 @@ int src_v4l_set_mmap(src_t *src, int fd)
 		
 		if(ioctl(s->fd, MJPIOC_REQBUFS, &s->mjpeg_breq))
 		{
-			ERROR("Error requesting video buffers.");
-			ERROR("MJPIOC_REQBUFS: %s", strerror(errno));
+			//ERROR("Error requesting video buffers.");
+			//ERROR("MJPIOC_REQBUFS: %s", strerror(errno));
 		}
 		
 		DEBUG("Got %ld buffers of size %ld KB",
@@ -598,8 +598,8 @@ int src_v4l_set_mmap(src_t *src, int fd)
 		
 		if(s->map == MAP_FAILED)
 		{
-			WARN("Error mmap'ing buffers.");
-			WARN("mmap: %s", strerror(errno));
+			//WARN("Error mmap'ing buffers.");
+			//WARN("mmap: %s", strerror(errno));
 			return(-1);
 		}
 		
@@ -609,8 +609,8 @@ int src_v4l_set_mmap(src_t *src, int fd)
 	/* Find out how many buffers are available. */
 	if(ioctl(fd, VIDIOCGMBUF, &s->vm) < 0)
 	{
-		WARN("Error while querying buffers.");
-		WARN("VIDEOCGMBUF: %s", strerror(errno));
+		//WARN("Error while querying buffers.");
+		//WARN("VIDEOCGMBUF: %s", strerror(errno));
 		return(-1);
 	}
 	
@@ -622,8 +622,8 @@ int src_v4l_set_mmap(src_t *src, int fd)
 	s->map = mmap(0, s->vm.size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
 	if(s->map == MAP_FAILED)
 	{
-		WARN("Error mmap'ing all available buffers.");
-		WARN("mmap: %s", strerror(errno));
+		//WARN("Error mmap'ing all available buffers.");
+		//WARN("mmap: %s", strerror(errno));
 		return(-1);
 	}
 	
@@ -638,8 +638,8 @@ int src_v4l_set_mmap(src_t *src, int fd)
 		s->mm.frame = frame;
 		if(ioctl(fd, VIDIOCMCAPTURE, &s->mm) < 0)
 		{
-			WARN("Error while requesting buffer %i to capture an image.", frame);
-			WARN("VIDIOCMCAPTURE: %s", strerror(errno));
+			//WARN("Error while requesting buffer %i to capture an image.", frame);
+			//WARN("VIDIOCMCAPTURE: %s", strerror(errno));
 			src_v4l_free_mmap(src);
 			return(-1);
 		}
@@ -658,8 +658,8 @@ int src_v4l_set_read(src_t *src)
 	vwin.height = src->height;
 	if(ioctl(s->fd, VIDIOCSWIN, &vwin) == -1)
 	{
-		ERROR("Error setting %ix%i resolution.",
-		      src->width, src->height);
+		//ERROR("Error setting %ix%i resolution.",
+		//      src->width, src->height);
 	}
 	
 	/* Ugly!, but should always be large enough. */
@@ -667,7 +667,7 @@ int src_v4l_set_read(src_t *src)
 	s->buffer = malloc(s->buffer_length);
 	if(!s->buffer)
 	{
-		ERROR("Out of memory.");
+		//ERROR("Out of memory.");
 		src_v4l_close(src);
 		return(-1);
 	}
@@ -685,8 +685,8 @@ int src_v4l_queue_buffers(src_t *src)
 	{
 		if(ioctl(s->fd, MJPIOC_QBUF_CAPT, &n))
 		{
-			ERROR("Error queing buffer %i.", n);
-			ERROR("MJPIOC_QBUF_CAPT: %s", strerror(errno));
+			//ERROR("Error queing buffer %i.", n);
+			//ERROR("MJPIOC_QBUF_CAPT: %s", strerror(errno));
 			return(-1);
 		}
 	}
@@ -703,7 +703,7 @@ static int src_v4l_open(src_t *src)
 	
 	if(!src->source)
 	{
-		ERROR("No device name specified.");
+		//ERROR("No device name specified.");
 		return(-2);
 	}
 	
@@ -711,7 +711,7 @@ static int src_v4l_open(src_t *src)
 	s = (src_v4l_t *) calloc(sizeof(src_v4l_t), 1);
 	if(!s)
 	{
-		ERROR("Out of memory.");
+		//ERROR("Out of memory.");
 		return(-2);
 	}
 	
@@ -725,13 +725,13 @@ static int src_v4l_open(src_t *src)
 	s->fd = open(src->source, O_RDWR | O_NONBLOCK);
 	if(s->fd < 0)
 	{
-		ERROR("Error opening device: %s", src->source);
-		ERROR("open: %s", strerror(errno));
+		//ERROR("Error opening device: %s", src->source);
+		//ERROR("open: %s", strerror(errno));
 		free(s);
 		return(-2);
 	}
 	
-	MSG("%s opened.", src->source);
+	//MSG("%s opened.", src->source);
 	
 	/* Get the device capabilities. */
 	if(src_v4l_get_capability(src, s->fd, &vd))
@@ -774,14 +774,14 @@ static int src_v4l_open(src_t *src)
 	/* Delay to let the image settle down. */
 	if(src->delay)
 	{
-		MSG("Delaying %i seconds.", src->delay);
+		//MSG("Delaying %i seconds.", src->delay);
 		usleep(src->delay * 1000 * 1000);
 	}
 	
 	/* Setup the mmap. */
 	if(!src->use_read && src_v4l_set_mmap(src, s->fd))
 	{
-		WARN("Unable to use mmap. Using read instead.");
+		//WARN("Unable to use mmap. Using read instead.");
 		src->use_read = -1;
 	}
 	
@@ -812,7 +812,7 @@ static int src_v4l_close(src_t *src)
 	{
 		if(s->map) src_v4l_free_mmap(src);
 		close(s->fd);
-		MSG("%s closed.", src->source);
+		//MSG("%s closed.", src->source);
 	}
 	
 	if(s->buffer) free(s->buffer);
@@ -830,16 +830,16 @@ int src_v4l_grab_mjpeg(src_t *src)
 	{
 		if(ioctl(s->fd, MJPIOC_QBUF_CAPT, &s->mjpeg_bsync.frame))
 		{
-			ERROR("Error queing buffer.");
-			ERROR("MJPIOC_QBUF_CAPT: %s", strerror(errno));
+			//ERROR("Error queing buffer.");
+			//ERROR("MJPIOC_QBUF_CAPT: %s", strerror(errno));
 			return(-1);
 		}
 	}
 	
 	if(ioctl(s->fd, MJPIOC_SYNC, &s->mjpeg_bsync))
 	{
-		ERROR("Error sync'ing buffer.");
-		ERROR("MJPIOC_SYNC: %s", strerror(errno));
+		//ERROR("Error sync'ing buffer.");
+		//ERROR("MJPIOC_SYNC: %s", strerror(errno));
 		return(-1);
 	}
 	
@@ -877,13 +877,13 @@ static int src_v4l_grab(src_t *src)
 		
 		if(r == -1)
 		{
-			ERROR("select: %s", strerror(errno));
+			//ERROR("select: %s", strerror(errno));
 			return(-1);
 		}
 		
 		if(!r)
 		{
-			ERROR("Timed out waiting for frame!");
+			//ERROR("Timed out waiting for frame!");
 			return(-1);
 		}
 	}
@@ -897,8 +897,8 @@ static int src_v4l_grab(src_t *src)
 			s->mm.frame = s->pframe;
 			if(ioctl(s->fd, VIDIOCMCAPTURE, &s->mm) < 0)
 			{
-				ERROR("Error while requesting buffer %i to capture an image.", s->pframe);
-				ERROR("VIDEOCMCAPTURE: %s", strerror(errno));
+				//ERROR("Error while requesting buffer %i to capture an image.", s->pframe);
+				//ERROR("VIDEOCMCAPTURE: %s", strerror(errno));
 				return(-1);
 			}
 		}
@@ -906,8 +906,8 @@ static int src_v4l_grab(src_t *src)
 		/* Wait for the frame to be captured. */
 		if(ioctl(s->fd, VIDIOCSYNC, &s->frame) < 0)
 		{
-			WARN("Error synchronising with buffer %i.", s->frame);
-			WARN("VIDIOCSYNC: %s", strerror(errno));
+			//WARN("Error synchronising with buffer %i.", s->frame);
+			//WARN("VIDIOCSYNC: %s", strerror(errno));
 			return(-1);
 		}
 		
@@ -930,8 +930,8 @@ static int src_v4l_grab(src_t *src)
 		
 		if(r <= 0)
 		{
-			WARN("Didn't read a frame.");
-			WARN("read: %s", strerror(errno));
+			//WARN("Didn't read a frame.");
+			//WARN("read: %s", strerror(errno));
 			return(-1);
 		}
 		

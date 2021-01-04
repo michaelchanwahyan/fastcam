@@ -84,7 +84,7 @@ int src_open(src_t *src, char *source)
 	
 	if(!source)
 	{
-		ERROR("No source was specified.");
+		//ERROR("No source was specified.");
 		return(-1);
 	}
 	
@@ -92,14 +92,14 @@ int src_open(src_t *src, char *source)
 	s = malloc(sl);
 	if(!s)
 	{
-		ERROR("Out of memory.");
+		//ERROR("Out of memory.");
 		return(-1);
 	}
 	
 	/* Get the first part of the source. */
 	if(argncpy(s, sl, source, ":", 0, 0))
 	{
-		ERROR("No source was specified.");
+		//ERROR("No source was specified.");
 		free(s);
 		return(-1);
 	}
@@ -110,7 +110,7 @@ int src_open(src_t *src, char *source)
 	{
 		if(!strcasecmp(s, src_mod[i]->name))
 		{
-			INFO(">>> Using '%s' source module.", src_mod[i]->name);
+			//INFO(">>> Using '%s' source module.", src_mod[i]->name);
 			
 			src->type = i;
 			src->source = NULL;
@@ -135,7 +135,7 @@ int src_open(src_t *src, char *source)
 	 * device we can check each source until we find one that works. */
 	if(stat(s, &st))
 	{
-		ERROR("stat: %s", strerror(errno));
+		//ERROR("stat: %s", strerror(errno));
 		free(s);
 		return(-1);
 	}
@@ -151,7 +151,7 @@ int src_open(src_t *src, char *source)
 		else r = 0;
 
 
-		MSG("Trying source module %s...", src_mod[i]->name);
+		//MSG("Trying source module %s...", src_mod[i]->name);
 
 		src->type = i;
 		r = src_mod[src->type]->open(src);
@@ -161,7 +161,7 @@ int src_open(src_t *src, char *source)
 		i++;
 	}
 	
-	ERROR("Unable to find a source module that can read %s.", source);
+	//ERROR("Unable to find a source module that can read %s.", source);
 	
 	free(s);
 	
@@ -181,18 +181,18 @@ int src_close(src_t *src)
 		/* Display FPS if enough frames where captured. */
 		if(src->captured_frames == 1)
 		{
-			MSG("Captured frame in %0.2f seconds.", seconds);
+			//MSG("Captured frame in %0.2f seconds.", seconds);
 		}
 		else if(src->captured_frames < 3)
 		{
-			MSG("Captured %i frames in %0.2f seconds.",
-			    src->captured_frames, seconds);
+			//MSG("Captured %i frames in %0.2f seconds.",
+			//    src->captured_frames, seconds);
 		}
 		else
 		{
-			MSG("Captured %i frames in %0.2f seconds. (%i fps)",
-			    src->captured_frames, seconds,
-			    (int) (src->captured_frames / seconds));
+			//MSG("Captured %i frames in %0.2f seconds. (%i fps)",
+			//    src->captured_frames, seconds,
+			//    (int) (src->captured_frames / seconds));
 		}
 	}
 	
@@ -232,7 +232,7 @@ int src_set_option(src_option_t ***options, char *name, char *value)
 		*options = malloc(sizeof(src_option_t *));
 		if(!*options)
 		{
-			ERROR("Out of memory.");
+			//ERROR("Out of memory.");
 			return(-1);
 		}
 		
@@ -255,7 +255,7 @@ int src_set_option(src_option_t ***options, char *name, char *value)
 		opt = (src_option_t *) malloc(sizeof(src_option_t));
 		if(!opt)
 		{
-			ERROR("Out of memory.");
+			//ERROR("Out of memory.");
 			return(-1);
 		}
 		
@@ -263,7 +263,7 @@ int src_set_option(src_option_t ***options, char *name, char *value)
 		if(!new)
 		{
 			free(opt);
-			ERROR("Out of memory.");
+			//ERROR("Out of memory.");
 			return(-1);
 		}
 		
