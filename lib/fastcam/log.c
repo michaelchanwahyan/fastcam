@@ -40,52 +40,52 @@ char verbose = 0;
 /* Taken from the GCC manual and cleaned up a bit. */
 char *vmake_message(const char *fmt, va_list ap)
 {
-	/* Start with 100 bytes. */
-	int n, size = 100;
-	char *p;
-	
-	p = (char *) malloc(size);
-	if(!p) return(NULL);
-	
-	while(1)
-	{
-		char *np;
-		va_list apc;
-		
-		/* Try to print in the allocated space. */
-		va_copy(apc, ap);
-		n = vsnprintf(p, size, fmt, apc);
-		
-		/* If that worked, return the string. */
-		if(n > -1 && n < size) return(p);
-		
-		/* Else try again with more space. */
-		if(n > -1) size = n + 1; /* gibc 2.1: exactly what is needed */
-		else size *= 2; /* glibc 2.0: twice the old size */
-		
-		np = (char *) realloc(p, size);
-		if(!np)
-		{
-			free(p);
-			return(NULL);
-		}
-		
-		p = np;
-	}
-	
-	free(p);
+    /* Start with 100 bytes. */
+    int n, size = 100;
+    char *p;
+    
+    p = (char *) malloc(size);
+    if(!p) return(NULL);
+    
+    while(1)
+    {
+        char *np;
+        va_list apc;
+        
+        /* Try to print in the allocated space. */
+        va_copy(apc, ap);
+        n = vsnprintf(p, size, fmt, apc);
+        
+        /* If that worked, return the string. */
+        if(n > -1 && n < size) return(p);
+        
+        /* Else try again with more space. */
+        if(n > -1) size = n + 1; /* gibc 2.1: exactly what is needed */
+        else size *= 2; /* glibc 2.0: twice the old size */
+        
+        np = (char *) realloc(p, size);
+        if(!np)
+        {
+            free(p);
+            return(NULL);
+        }
+        
+        p = np;
+    }
+    
+    free(p);
         return(NULL);
 }
 
 char *make_message(const char *fmt, ... )
 {
-	va_list ap;
-	char *msg;
-	
-	va_start(ap, fmt);
-	msg = vmake_message(fmt, ap);
-	va_end(ap);
-	
-	return(msg);
+    va_list ap;
+    char *msg;
+    
+    va_start(ap, fmt);
+    msg = vmake_message(fmt, ap);
+    va_end(ap);
+    
+    return(msg);
 }
 

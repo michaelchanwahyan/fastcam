@@ -62,58 +62,58 @@ typedef struct {
 extern src_palette_t src_palette[];
 
 typedef struct {
-	char *name;
-	char *value;
+    char *name;
+    char *value;
 } src_option_t;
 
 typedef struct {
-	
-	/* Source Options */
-	char *source;
-	uint8_t type;
-	
-	void *state;
-	
-	/* Last captured image */
-	uint32_t length;
-	void *img;
-	
-	/* Input Options */
-	char    *input;
-	uint8_t  tuner;
-	uint32_t frequency;
-	uint32_t delay;
-	uint32_t timeout;
-	char     use_read;
-	
-	/* List Options */
-	uint8_t list;
-	
-	/* Image Options */
-	int palette;
-	uint32_t width;
-	uint32_t height;
-	uint32_t fps;
-	
-	src_option_t **option;
-	
-	/* For calculating capture FPS */
-	uint32_t captured_frames;
-	struct timeval tv_first;
-	struct timeval tv_last;
-	
+    
+    /* Source Options */
+    char *source;
+    uint8_t type;
+    
+    void *state;
+    
+    /* Last captured image */
+    uint32_t length;
+    void *img;
+    
+    /* Input Options */
+    char    *input;
+    uint8_t  tuner;
+    uint32_t frequency;
+    uint32_t delay;
+    uint32_t timeout;
+    char     use_read;
+    
+    /* List Options */
+    uint8_t list;
+    
+    /* Image Options */
+    int palette;
+    uint32_t width;
+    uint32_t height;
+    uint32_t fps;
+    
+    src_option_t **option;
+    
+    /* For calculating capture FPS */
+    uint32_t captured_frames;
+    struct timeval tv_first;
+    struct timeval tv_last;
+    
 } src_t;
 
 typedef struct {
-	
-	char *name;
-	
-	uint8_t flags;
-	
-	int (*open)(src_t *);
-	int (*close)(src_t *);
-	int (*grab)(src_t *);
-	
+    
+    char *name;
+    
+    uint8_t flags;
+    
+    int (*open)(src_t *);
+    int (*close)(src_t *);
+    int (*grab)(src_t *);
+    
 } src_mod_t;
 
 extern int src_open(src_t *src, char *source);

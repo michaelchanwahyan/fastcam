@@ -18,24 +18,24 @@
 
 int fswc_add_image_png(src_t *src, avgbmp_t *abitmap)
 {
-	uint32_t x, y;
-	gdImage *im;
-	
-	im = gdImageCreateFromPngPtr(src->length, src->img);
-	if(!im) return(-1);
-	
-	for(y = 0; y < src->height; y++)
-		for(x = 0; x < src->width; x++)
-		{
-			int c = gdImageGetPixel(im, x, y);
-			
-			*(abitmap++) += (c & 0xFF0000) >> 16;
-			*(abitmap++) += (c & 0x00FF00) >> 8;
-			*(abitmap++) += (c & 0x0000FF);
-		}
-	
-	gdImageDestroy(im);
-	
-	return(0);
+    uint32_t x, y;
+    gdImage *im;
+    
+    im = gdImageCreateFromPngPtr(src->length, src->img);
+    if(!im) return(-1);
+    
+    for(y = 0; y < src->height; y++)
+        for(x = 0; x < src->width; x++)
+        {
+            int c = gdImageGetPixel(im, x, y);
+            
+            *(abitmap++) += (c & 0xFF0000) >> 16;
+            *(abitmap++) += (c & 0x00FF00) >> 8;
+            *(abitmap++) += (c & 0x0000FF);
+        }
+    
+    gdImageDestroy(im);
+    
+    return(0);
 }
 

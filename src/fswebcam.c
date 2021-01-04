@@ -105,7 +105,7 @@ int fswc_grab(char *name)
     {
         src_grab(&src);        
     
-        //i = copy_jpeg_dht(src.img, src.length, &himg, &hlength);	
+        //i = copy_jpeg_dht(src.img, src.length, &himg, &hlength);    
         i = 1; himg = src.img; hlength = src.length;
         im = gdImageCreateFromJpegPtr(hlength, himg);       
         
