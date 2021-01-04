@@ -1,6 +1,4 @@
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+#include "fastcam/config.h"
 
 #include <stdio.h>
 #include <getopt.h>
@@ -14,13 +12,11 @@
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include "fswebcam.h"
-#include "log.h"
-#include "src.h"
-#include "dec.h"
-//#include "effects.h"
-#include "parse.h"
-#include "fswebcam.h"
+#include "fastcam/fswebcam.h"
+#include "fastcam/log.h"
+#include "fastcam/src.h"
+#include "fastcam/dec.h"
+#include "fastcam/parse.h"
 
 gdImage* fswc_gdImageDuplicate(gdImage* src)
 {
