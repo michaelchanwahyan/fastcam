@@ -52,11 +52,13 @@ target_link_libraries(fastcam_src
   fastcam_src_raw
   fastcam_src_v4l1
   fastcam_src_v4l2
+  fastcam_parse
 )
 
 add_executable (fastcam fswebcam.c)
 target_link_libraries(fastcam
-  /usr/lib/arm-linux-gnueabihf/libgd.so
+  /usr/lib/x86_64-linux-gnu/libgd.so
+  #/usr/lib/arm-linux-gnueabihf/libgd.so
   fastcam_config
   fastcam_dec
   fastcam_log
