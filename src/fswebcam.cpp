@@ -1,5 +1,4 @@
 #include "fastcam/config.h"
-
 #include <stdio.h>
 #include <getopt.h>
 #include <string.h>
@@ -18,6 +17,8 @@
 #include "fastcam/dec.h"
 #include "fastcam/parse.h"
 #include "fastcam/dec_jpeg.h"
+
+#include <iostream>
 
 gdImage* fswc_gdImageDuplicate(gdImage* src)
 {
@@ -72,9 +73,9 @@ int fswc_grab(char *name)
     avgbmp_t *abitmap, *pbitmap, *gbitmap;
     gdImage *image, *original;
     src_t src;
-    
     /* Set source options... */
     memset(&src, 0, sizeof(src));
+
     src.input      = NULL; //config->input;
     src.tuner      = 0; //config->tuner;
     src.frequency  = 0; //config->frequency;
@@ -88,7 +89,6 @@ int fswc_grab(char *name)
     src.fps        = 1200; //config->fps;
 
     if(src_open(&src, strdup("/dev/video0")) == -1) return(-1);
-        
     /* Allocate memory for the average bitmap buffer. */
     gbitmap = (avgbmp_t *)calloc(src.fps * 2 * src.height * 3, sizeof(avgbmp_t));
     abitmap = (avgbmp_t *)calloc(2 * src.height * 3, sizeof(avgbmp_t));
@@ -111,7 +111,6 @@ int fswc_grab(char *name)
         
         gdImageCopy(im3, im, frame*2, 0, src.width / 2, 0, 2, src.height);
         gdImageDestroy(im);
-        //MSG("No. of Frames= %d", frame);
     }
 
     fswc_output(name, im3); 
@@ -127,7 +126,6 @@ int main(int argc, char *argv[])
  
     int r = 0;
     
- 
     r = fswc_grab(argv[1]);
 
     

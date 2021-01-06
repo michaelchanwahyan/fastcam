@@ -57,8 +57,8 @@ target_link_libraries(fastcam_src
 
 add_executable (fastcam src/fswebcam.cpp)
 target_link_libraries(fastcam
-  /usr/lib/x86_64-linux-gnu/libgd.so
-  #/usr/lib/arm-linux-gnueabihf/libgd.so
+  #/usr/lib/x86_64-linux-gnu/libgd.so
+  /usr/lib/arm-linux-gnueabihf/libgd.so
   fastcam_config
   fastcam_dec
   fastcam_log
